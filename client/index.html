@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat</title>
+    <script type="module">
+        import {io} from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js'
+        const socket=io({
+            auth:{
+                serverOffset:0
+            }
+        }) ;
+        const form = document.getElementById('form');
+        const input=document.getElementById('input');
+        const contMsg=document.querySelector('.cont-msg');
+        // const getUsername= async ()=>{
+        //     const username= localStorage.getItem('username');
+        //     if (usernam){
+        //         return 
+        //     }
+            
+        // }
+        form.addEventListener('submit',(e)=>{
+            e.preventDefault();
+            if (input){
+                socket.emit('chat message', input.value);
+                input.value="";
+            }
+        })
+        socket.on('chat message' ,(msg,serverOffset)=>{
+            const div=document.createElement('div');
+            div.classList.add('msg');
+            div.textContent=msg;
+            contMsg.appendChild(div);
+            socket.auth.serverOffset=serverOffset;
+            contMsg.scrollTop=contMsg.scrollHeight;
+        })
+    
+    </script>
+</head>
+<style>
+    *{
+        box-sizing: border-box;
+    }
+    :root{
+        color-scheme:light dark ;
+    }
+    body{
+        font-family: sans-serif;
+        display: grid;
+        place-content: center;
+        height: 100vh;
+        padding: 38px;
+        grid-template-rows: 1fr;
+        width: 100%;
+    
+
+    }
+    #chat{
+        border: 2px solid gray  ;
+        border-radius: 4px;
+        overflow: hidden;
+        height: 100%;
+        position: relative;
+        width: 100%;
+        width: 300px;
+
+
+    }
+    #form{
+        bottom: 0;
+        display: flex;
+        height: 48px;
+        left: 0;
+        padding: 4px;
+        position: absolute;
+     
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    #input{
+        border-radius: 9999px !important;
+        border: 1px solid #eee !important;
+    
+    }
+    #form > button{
+        background-color: #09f;
+        color: #fff;
+        border: 0;
+        margin: 4px;
+        border-radius: 4px;
+    }
+    #form> button:hover{
+        background-color: #0cf;
+
+
+    }
+    .cont-msg{
+        /* background-color: #eee; */
+        width: 100%;
+        display: grid;
+        height: 90%;
+        overflow-y: auto;
+        grid-auto-rows:minmax(min-content,max-content);
+        gap: 5px;
+    }
+    .msg{
+        margin: 5px;
+        background: rgba(6, 97, 158, 0.641);
+        border-radius: 6px;
+        padding: 5px;
+        min-height: 50px;
+      
+     
+    }
+    .cont-msg > .msg:nth-child(odd){
+        background: rgba(3, 156, 3, 0.251);
+    }
+</style>
+<body>
+
+    <section id="chat">
+        <div class="cont-msg">
+   
+
+        </div>
+        <form id="form">
+            <input type="text" name="message"  placeholder="type a message" autocomplete="off"
+            id="input">
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+</body>
+</html>
