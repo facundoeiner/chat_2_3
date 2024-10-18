@@ -9,6 +9,8 @@ const port= process.env.PORT ?? 3000;
 console.log(process.cwd()+"/index.html");
 const app=express();
 app.use(logger('dev'));
+app.use(express.static(process.cwd()));
+
 app.get('/',(req,res)=>{
     
 
@@ -26,7 +28,7 @@ const io=new Server(server,{
 
 const db= createClient({
     url:'libsql://informed-outlaw-kid-facu.turso.io',
-    authToken:process.env.DB_TOKEN
+    authToken:'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MjkxOTg5MjksImlkIjoiZjY4OTQ3YWQtMjdhZi00NGI4LTk4NTEtYTQyMTE4MjNlYjEzIn0.iZCasyxD4QZN7e5qy6X-wiJKMGhFj5cSdY7PEGm1ScDcLpytnVuzSRMEOk_pz8Zz8wIpWnLu9MhDsrdz1V4TCg'
 })
 
  await db.execute(`
