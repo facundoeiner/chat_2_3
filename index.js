@@ -6,12 +6,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { createClient} from "@libsql/client";
 const port= process.env.PORT ?? 3000;
-
+console.log(process.cwd()+"/index.html");
 const app=express();
 app.use(logger('dev'));
 app.get('/',(req,res)=>{
-    res.sendFile(process.cwd() + '/client/index.html');
     
+
+    res.sendFile(process.cwd()+"/index.html");
 })
 
 
